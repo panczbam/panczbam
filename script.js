@@ -132,14 +132,29 @@ window.addEventListener("DOMContentLoaded", function(){
 
   document.getElementById("close-cert").onclick = () => { hideModal("cert-modal"); };
   document.getElementById("download-cert").onclick = function(e) {
-    e.preventDefault();
-    html2canvas(document.querySelector(".cert-content")).then(canvas => {
+  e.preventDefault();
+  const cert = document.querySelector(".cert-content");
+  // Ukryj przycisk przed zrobieniem zdjęcia
+  const btn = document.getElementById("download-cert");
+  btn.style.display = "none";
+  // Ustaw certyfikat na pełną wysokość (jeśli był przewijany)
+  const prevMaxHeight = cert.style.maxHeight;
+  cert.style.maxHeight = 'none';
+
+  // Poczekaj, aż się ukryje, potem zrób screen
+  setTimeout(() => {
+    html2canvas(cert).then(canvas => {
+      // Przywróć wszystko
+      btn.style.display = "";
+      cert.style.maxHeight = prevMaxHeight;
+      // Pobierz obrazek
       let lnk = document.createElement('a');
       lnk.download = 'certyfikat_marty.png';
       lnk.href = canvas.toDataURL();
       lnk.click();
     });
-  };
+  }, 200);
+};
 
   document.getElementById("icon-music").onclick = () => { window.open("https://drive.google.com/file/d/1EbU08xF1yjfINQ7hIJthSiCB3yP6jxiz/view?usp=drive_link","_blank"); };
 
