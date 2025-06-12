@@ -19,17 +19,30 @@ function createFloatingShape() {
 }
 setInterval(createFloatingShape, 500);
 
-// Okienko retro powitalne
+// Okienko retro powitalne + quiz, certyfikat itp.
 window.addEventListener("DOMContentLoaded", function(){
   document.getElementById("welcome-modal").style.display = "flex";
-  document.getElementById("close-modal").onclick = () => {
+
+  // Przyciski zamykania
+  const heartBtn = document.getElementById("xp-heart-btn");
+  const xpBody = document.getElementById("xp-body");
+
+  // Funkcja pokazująca serduszko po przewinięciu do dołu
+  xpBody.addEventListener('scroll', function() {
+    if (xpBody.scrollTop + xpBody.clientHeight >= xpBody.scrollHeight - 5) {
+      heartBtn.style.display = "block";
+    }
+  });
+  // Jeśli na małych ekranach cała wiadomość się mieści, pokaż od razu
+  if (xpBody.scrollHeight <= xpBody.clientHeight + 5) {
+    heartBtn.style.display = "block";
+  }
+
+  heartBtn.onclick = () => {
     document.getElementById("welcome-modal").style.display = "none";
-    const xpClose = document.getElementById("xp-close");
-  if(xpClose){
-    xpClose.onclick = () => {
-      document.getElementById("welcome-modal").style.display = "none";
-      document.getElementById("bg-music").play();document.getElementById("bg-music").play();
+    document.getElementById("bg-music").play();
   };
+
   // Quiz
   const quizBtn = document.getElementById("quiz-btn");
   const quizModal = document.getElementById("quiz-modal");
@@ -66,10 +79,12 @@ window.addEventListener("DOMContentLoaded", function(){
       quizResult.innerHTML = "😢 Coś poszło nie tak, spróbuj jeszcze raz!";
     }
   };
+
   // Certyfikat zamykanie
   document.getElementById("close-cert").onclick = () => {
     document.getElementById("cert-modal").style.display = "none";
   };
+
   // Przygotuj pobieranie certyfikatu (zrzut ekranu)
   document.getElementById("download-cert").onclick = function(e) {
     e.preventDefault();
