@@ -42,14 +42,16 @@ function enableFlyingBtns() {
 }
 
 // Latające ikony
-function animateFlyingIcon(icon) {
-  let x = Math.random() * (window.innerWidth * 0.17),
-      y = 60 + Math.random() * (window.innerHeight * 0.7);
-  let dx = (Math.random() - 0.5) * 2, dy = (Math.random() - 0.5) * 2;
+function animateFlyingIcon(icon, idx, total) {
+  let x = Math.random() * (window.innerWidth * 0.15) + 10;
+  let y = 70 + idx * (window.innerHeight / (total+1));
+  icon.style.left = x + "px";
+  icon.style.top = y + "px";
+  let dx = (Math.random() - 0.5) * 1.3, dy = (Math.random() - 0.5) * 1.3;
   function move() {
     x += dx; y += dy;
-    if (x < 2 || x > window.innerWidth * 0.7) dx = -dx;
-    if (y < 30 || y > window.innerHeight - 80) dy = -dy;
+    if (x < 2 || x > window.innerWidth * 0.22) dx = -dx;
+    if (y < 30 || y > window.innerHeight - 100) dy = -dy;
     icon.style.left = x + "px";
     icon.style.top = y + "px";
     icon._iconAnim = requestAnimationFrame(move);
@@ -57,7 +59,8 @@ function animateFlyingIcon(icon) {
   icon._iconAnim = requestAnimationFrame(move);
 }
 function enableFlyingIcons() {
-  document.querySelectorAll('.flying-icon').forEach(animateFlyingIcon);
+  let icons = Array.from(document.querySelectorAll('.flying-icon'));
+  icons.forEach((icon, idx) => animateFlyingIcon(icon, idx, icons.length));
 }
 
 // Losowe pastelowe okienka na tle
@@ -171,7 +174,7 @@ window.addEventListener("DOMContentLoaded", function(){
     setTimeout(()=>{ document.getElementById("love-effect").style.display = "none"; }, 1900);
   };
 
-  // Miniodtwarzacz
+  // Miniodtwarzacz (działa play/pauza!)
   let music = document.getElementById('bg-music');
   let toggle = document.getElementById('music-toggle');
   let label = document.getElementById('music-label');
@@ -185,11 +188,10 @@ window.addEventListener("DOMContentLoaded", function(){
     }
   }
   window.playMusic = function(){
-    try{ music.play(); }catch{}
-    updateMusicState();
+    music.play().then(updateMusicState).catch(()=>{});
   }
   toggle.onclick = function(){
-    if(music.paused) music.play();
+    if(music.paused) music.play().then(updateMusicState).catch(()=>{});
     else music.pause();
     updateMusicState();
   };
@@ -197,8 +199,7 @@ window.addEventListener("DOMContentLoaded", function(){
   music.onpause = updateMusicState;
   // Autoplay na mobile
   music.volume = 0.5;
-  try{ music.play(); }catch{}
-  document.body.onclick = () => { music.play(); };
+  document.body.onclick = () => { music.play().then(updateMusicState).catch(()=>{}); };
 
   enableFlyingBtns();
   enableFlyingIcons();
