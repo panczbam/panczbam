@@ -99,32 +99,37 @@ window.addEventListener("DOMContentLoaded", function(){
   // Quiz — przewijany
   document.getElementById("icon-docs").onclick = () => { showModal("quiz-modal"); };
   document.getElementById("close-quiz").onclick = () => { hideModal("quiz-modal"); };
-  document.getElementById("quiz-form").onsubmit = function(e){
-    e.preventDefault();
-    const ans = {
-      q1: this.q1.value.trim().toLowerCase(),
-      q2: this.q2.value.trim().toLowerCase(),
-      q3: this.q3.value.trim().toLowerCase(),
-      q4: this.q4.value.trim().toLowerCase(),
-      q5: this.q5.value.trim().toLowerCase()
-    };
-    let correct = 0;
-    if(ans.q1 === "mandu") correct++;
-    if(ans.q2 === "fifi") correct++;
-    if(ans.q3.includes("dionizos")) correct++;
-    if(ans.q4.includes("life goes on")) correct++;
-    if(ans.q5.includes("jeno") && ans.q5.includes("the bud")) correct++;
-    const quizResult = document.getElementById("quiz-result");
-    if(correct === 5){
-      quizResult.innerHTML = "🥳 Wszystko poprawnie! Odbierz swój certyfikat!";
-      setTimeout(() => {
-        hideModal("quiz-modal");
-        showModal("cert-modal");
-      }, 1100);
-    } else {
-      quizResult.innerHTML = "😢 Coś poszło nie tak, spróbuj jeszcze raz!";
-    }
+ document.getElementById("quiz-form").onsubmit = function(e){
+  e.preventDefault();
+  const ans = {
+    q1: this.q1.value.trim().toLowerCase(),
+    q2: this.q2.value.trim().toLowerCase(),
+    q3: this.q3.value.trim().toLowerCase(),
+    q4: this.q4.value.trim().toLowerCase(),
+    q5: this.q5.value.trim().toLowerCase(),
+    q6: this.q6.value.trim().toLowerCase()
   };
+  let correct = 0;
+  if(ans.q1 === "mandu") correct++;
+  if(ans.q2 === "fifi") correct++;
+  if(ans.q3 === "dionysus") correct++;
+  if(ans.q4 === "life goes on") correct++;
+  // Akceptuj różne warianty odpowiedzi na 5
+  if((ans.q5.includes("jeno") || ans.q5.includes("jeno's") || ans.q5.includes("jenoa")) && (ans.q5.includes("the bat") || ans.q5.includes("bat"))) correct++;
+  // Pytanie 6 zaliczamy ZAWSZE
+  correct++;
+
+  const quizResult = document.getElementById("quiz-result");
+  if(correct === 6){
+    quizResult.innerHTML = "🥳 Wszystko poprawnie! Odbierz swój certyfikat!";
+    setTimeout(() => {
+      hideModal("quiz-modal");
+      showModal("cert-modal");
+    }, 1100);
+  } else {
+    quizResult.innerHTML = "😢 Coś poszło nie tak, spróbuj jeszcze raz!";
+  }
+};
 
   document.getElementById("close-cert").onclick = () => { hideModal("cert-modal"); };
   document.getElementById("download-cert").onclick = function(e) {
