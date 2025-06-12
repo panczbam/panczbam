@@ -11,7 +11,6 @@ function createFloatingShape(extra=false) {
   shape.style.transition = "top 6s linear, opacity 6s linear, left 6s linear";
   (extra ? document.getElementById("extra-hearts") : document.getElementById("floating-shapes")).appendChild(shape);
 
-  // Lekko przesuwaj w bok podczas spadania
   let endLeft = Math.max(0, Math.min(98, parseFloat(shape.style.left) + (Math.random()-0.5)*15));
   setTimeout(() => {
     shape.style.top = "100vh";
@@ -22,36 +21,17 @@ function createFloatingShape(extra=false) {
 }
 setInterval(()=>createFloatingShape(false), 400);
 
-// Latające przyciski (odbijanie od boków)
-function animateFlyingBtn(btn) {
-  let x = Math.random() * (window.innerWidth * 0.7), y = Math.random() * (window.innerHeight * 0.55);
-  let dx = (Math.random() - 0.5) * 7, dy = (Math.random() - 0.5) * 7;
-  function move() {
-    x += dx; y += dy;
-    if (x < 0 || x > window.innerWidth - btn.offsetWidth - 30) dx = -dx;
-    if (y < 0 || y > window.innerHeight - btn.offsetHeight - 30) dy = -dy;
-    btn.style.transform = `translate(${x}px,${y}px)`;
-    btn._flyingAnim = requestAnimationFrame(move);
-  }
-  btn.onmouseenter = () => { btn._flyingAnim && cancelAnimationFrame(btn._flyingAnim); };
-  btn.onmouseleave = () => { btn._flyingAnim = requestAnimationFrame(move); };
-  btn._flyingAnim = requestAnimationFrame(move);
-}
-function enableFlyingBtns() {
-  document.querySelectorAll('.flying-btn').forEach(animateFlyingBtn);
-}
-
-// Latające ikony
+// Latające ikony (z losowym startem i klikaniem)
 function animateFlyingIcon(icon, idx, total) {
-  let x = Math.random() * (window.innerWidth * 0.15) + 10;
-  let y = 70 + idx * (window.innerHeight / (total+1));
+  let x = Math.random() * (window.innerWidth * 0.18) + 12;
+  let y = 60 + idx * (window.innerHeight / (total+1)) + Math.random()*50;
   icon.style.left = x + "px";
   icon.style.top = y + "px";
-  let dx = (Math.random() - 0.5) * 1.3, dy = (Math.random() - 0.5) * 1.3;
+  let dx = (Math.random() - 0.5) * 1.4, dy = (Math.random() - 0.5) * 1.4;
   function move() {
     x += dx; y += dy;
-    if (x < 2 || x > window.innerWidth * 0.22) dx = -dx;
-    if (y < 30 || y > window.innerHeight - 100) dy = -dy;
+    if (x < 5 || x > window.innerWidth * 0.22) dx = -dx;
+    if (y < 30 || y > window.innerHeight - 110) dy = -dy;
     icon.style.left = x + "px";
     icon.style.top = y + "px";
     icon._iconAnim = requestAnimationFrame(move);
@@ -59,7 +39,7 @@ function animateFlyingIcon(icon, idx, total) {
   icon._iconAnim = requestAnimationFrame(move);
 }
 function enableFlyingIcons() {
-  let icons = Array.from(document.querySelectorAll('.flying-icon'));
+  let icons = Array.from(document.querySelectorAll('.icon'));
   icons.forEach((icon, idx) => animateFlyingIcon(icon, idx, icons.length));
 }
 
@@ -95,8 +75,12 @@ function spawnRandomWindow() {
 for(let i=0;i<4;i++) spawnRandomWindow();
 
 window.addEventListener("DOMContentLoaded", function(){
-  showModal("welcome-modal");
+  // start ikon
   enableFlyingIcons();
+
+  // Od razu wyświetl wiadomość powitalną
+  showModal("welcome-modal");
+
   // Wiadomość przewijalna
   const welcomeContent = document.getElementById("welcome-content");
   const okBtn = document.getElementById("welcome-ok");
@@ -197,15 +181,21 @@ window.addEventListener("DOMContentLoaded", function(){
   };
   music.onplay = updateMusicState;
   music.onpause = updateMusicState;
-  // Autoplay na mobile
+  // Autoplay na mobile po pierwszym kliknięciu
   music.volume = 0.5;
   document.body.onclick = () => { music.play().then(updateMusicState).catch(()=>{}); };
 
-  enableFlyingBtns();
-  enableFlyingIcons();
 });
 
-// html2canvas loader (do zrzutu certyfikatu)
+// Okno modal - helpers
+function showModal(id) {
+  document.getElementById(id).style.display = "block";
+}
+function hideModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+// html2canvas loader
 (function(){
   var s = document.createElement('script');
   s.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
