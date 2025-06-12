@@ -10,30 +10,28 @@
 </head>
 <body>
   <div class="background-grid"></div>
-  <!-- Losowe pastelowe okienka -->
   <div id="random-windows"></div>
 
   <!-- Ikony na pulpicie -->
   <div class="desktop-icons">
-    <div class="icon flying-icon" id="icon-message">
+    <div class="icon" id="icon-message">
       <div class="icon-img computer"></div>
       <div class="icon-label">my_computer</div>
     </div>
-    <div class="icon flying-icon" id="icon-music">
+    <div class="icon" id="icon-music">
       <div class="icon-img music"></div>
       <div class="icon-label">my_music</div>
     </div>
-    <div class="icon flying-icon" id="icon-docs">
+    <div class="icon" id="icon-docs">
       <div class="icon-img folder"></div>
       <div class="icon-label">my_documents</div>
     </div>
-    <div class="icon flying-icon" id="icon-love">
+    <div class="icon" id="icon-love">
       <div class="icon-img heart"></div>
       <div class="icon-label">my_love</div>
     </div>
   </div>
 
-  <!-- Animowane serduszka i sakury -->
   <div id="floating-shapes"></div>
   <div id="extra-hearts"></div>
 
@@ -41,14 +39,14 @@
   <div id="welcome-modal" class="retro-window pink modal-large" style="display:none;">
     <div class="retro-titlebar">
       <span>Wiadomość od Zosi</span>
-      <button class="retro-close flying-btn" id="close-welcome">✕</button>
+      <button class="retro-close" id="close-welcome">✕</button>
     </div>
     <div class="retro-content">
       <div class="retro-scroll" id="welcome-content">
         Cześć, kochana Martusiu Tuśtuś!<br><br>
         Bardzo przepraszam, że tak długo musiałaś czekać na swój prezent, a ostatecznie i tak nie jest on do końca kompletny. To jedna z jego części. Początkowo do każdej piosenki miała być notka, dlaczego to właśnie ona znalazła się na tej playliście, ale myślę, że Ty sama wiesz, dlaczego każda jedna piosenka tam jest, a jeśli nie znasz którejś, to przeczytaj sobie jej tekst – kilka z nich dobrałam pod względem tekstów i uważam, że są bardzo adekwatne do Ciebie, naszej przyjaźni i w ogóle. Pisałaś, że chciałabyś, aby ktoś zrobił Ci playlistę, ale ja za bardzo nie potrafię tego robić, a chyba słuchamy trochę innej muzyki. Powstało więc to – mam nadzieję, że nie jesteś zawiedziona. Naprawdę bardzo się starałam i mam nadzieję, że chociaż trochę rozbawią Cię okładki piosenek. Dziękuję Ci za te wszystkie lata i cały spędzony razem czas. Jesteś wspaniała i naprawdę kochana. Czasami czuję, że nie zasługuję na tak wspaniałą osobę jak Ty. Mimo że czasem się wkurzam, obrażam czy cokolwiek, to naprawdę codziennie, jak wstaję, jestem z całego serca wdzięczna, że jesteś tu dalej ze mną i że mogłam Cię poznać. Bardzo mocno zmieniłaś moje życie i mam nadzieję, że zostaniesz tu jeszcze naprawdę przez długi czas i mnie nie opuścisz. To, co pisałaś w kartce – oczywiście możliwe, że się stanie, że nie będziemy miały czasu dla siebie i w ogóle, ale ja jak najbardziej i mam nadzieję, że Ty też będziemy starać się utrzymywać tę relację i wierzę, że naprawdę będzie dobrze i super, bo nie wyobrażam sobie, żebyś po prostu nie była w moim życiu. Z okazji tych pięknych urodzin życzę Ci mało płakania, a dużo śmiechu (i innych przyjemności – żart!). Po prostu życzę Ci, abyś była szczęśliwszą, lepszą wersją siebie, którą będziesz kochać, i nie będziesz się poddawała ani bała próbować do skutku. Abyś była zadowolona z siebie i ze swojego życia, robiła to, co kochasz najbardziej, ale też próbowała nowych rzeczy, poznawała nowych ludzi i uczyła się na błędach, ale nie załamywała się tym, co Ci się nie uda, tylko była wyrozumiała wobec siebie i podnosiła się z jeszcze lepszym nastawieniem. Nie wiem, co jeszcze napisać, bo myślę, że wiesz, że kocham Cię z całego serca i że życzę Ci jak najlepiej, i wiesz, jak bardzo mi na Tobie zależy, więc po prostu wiedz – ja nigdy nie będę chciała Cię skrzywdzić, zostawić, opuścić i zawsze będę Cię wspierać, nawet jeśli mogę być trochę zazdrosna. Mimo że masz już 19 lat i jesteś staruchą, to rośnij dalej i bądź dalej moją wspaniałą unnie. Love yourself, bo i love you very much. Jesteś boska, zaakceptuj siebie, poczuj, że jesteś wspaniała – Matka Natura Ci to dała. Pozdrawiam Cię z najlepszymi całuskami, buziaczkami i przytulaskami. I love you, xoxo, bye.
       </div>
-      <button id="welcome-ok" class="retro-btn ok flying-btn" style="display:none;">❤️ OK</button>
+      <button id="welcome-ok" class="retro-btn ok" style="display:none;">❤️ OK</button>
     </div>
   </div>
 
@@ -56,7 +54,7 @@
   <div id="quiz-modal" class="retro-window green modal-large" style="display:none;">
     <div class="retro-titlebar">
       Quiz przyjaźni
-      <button class="retro-close flying-btn" id="close-quiz">✕</button>
+      <button class="retro-close" id="close-quiz">✕</button>
     </div>
     <div class="retro-content">
       <div class="retro-scroll scroll-quiz" id="quiz-scroll">
@@ -72,7 +70,7 @@
           <div class="q"><label>5. Przy oglądaniu czyjego fankama wyznałam coming out i jakiej piosenki?</label>
             <input type="text" name="q5" required /></div>
           <div id="quiz-result"></div>
-          <button type="submit" class="retro-btn yes flying-btn" id="quiz-submit-btn">YES!</button>
+          <button type="submit" class="retro-btn yes" id="quiz-submit-btn">YES!</button>
         </form>
       </div>
     </div>
@@ -82,9 +80,9 @@
   <div id="cert-modal" class="retro-window purple modal-large" style="display:none;">
     <div class="retro-titlebar">
       Certyfikat Najlepszej Przyjaźni
-      <button class="retro-close flying-btn" id="close-cert">✕</button>
+      <button class="retro-close" id="close-cert">✕</button>
     </div>
-    <div class="retro-content">
+    <div class="retro-content cert-content">
       <div class="cert-imgs">
         <img src="a8fc0a0c-dc31-483b-9780-4ec4e4c35db1.jfif" alt="Zdjęcie przyjaźni" class="cert-photo" />
       </div>
@@ -92,7 +90,7 @@
         <span class="pixel">GAME OVER!</span><br>
         <b>Marta</b> i <b>Zosia</b> — Najlepsze Przyjaciółki 💜
       </div>
-      <button id="download-cert" class="retro-btn ok flying-btn">Pobierz certyfikat</button>
+      <button id="download-cert" class="retro-btn ok">Pobierz certyfikat</button>
     </div>
   </div>
 
