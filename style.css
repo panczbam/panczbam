@@ -185,3 +185,7 @@ body {
   .desktop-icons { left:0; top:0;}
   #music-player { right:2vw; top:7px;}
 }
+.cert-content {
+  max-height: 60vh;
+  overflow-y: auto;
+}
