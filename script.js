@@ -24,7 +24,11 @@ window.addEventListener("DOMContentLoaded", function(){
   document.getElementById("welcome-modal").style.display = "flex";
   document.getElementById("close-modal").onclick = () => {
     document.getElementById("welcome-modal").style.display = "none";
-    document.getElementById("bg-music").play();
+    const xpClose = document.getElementById("xp-close");
+  if(xpClose){
+    xpClose.onclick = () => {
+      document.getElementById("welcome-modal").style.display = "none";
+      document.getElementById("bg-music").play();document.getElementById("bg-music").play();
   };
   // Quiz
   const quizBtn = document.getElementById("quiz-btn");
