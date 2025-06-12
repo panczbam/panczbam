@@ -8,48 +8,53 @@ function createFloatingShape() {
   shape.style.fontSize = `${20 + Math.random() * 30}px`;
   shape.style.top = "-30px";
   shape.style.opacity = 0.8 + Math.random() * 0.2;
-  shape.style.transition = "top 6s linear, opacity 6s linear";
+  shape.style.transition = "top 6s linear, opacity 6s linear, left 6s linear";
   document.getElementById("floating-shapes").appendChild(shape);
 
+  // Lekko przesuwaj w bok podczas spadania
+  let endLeft = Math.max(0, Math.min(98, parseFloat(shape.style.left) + (Math.random()-0.5)*15));
   setTimeout(() => {
     shape.style.top = "100vh";
+    shape.style.left = endLeft+"vw";
     shape.style.opacity = 0;
   }, 50);
   setTimeout(() => shape.remove(), 6500);
 }
-setInterval(createFloatingShape, 500);
+setInterval(createFloatingShape, 350);
 
-// Okienko retro powitalne + quiz, certyfikat itp.
+// Okienka: otwieranie
+function showModal(id) {
+  document.getElementById(id).style.display = "block";
+}
+function hideModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+// Okienko powitalne — przewijanie i serduszko
 window.addEventListener("DOMContentLoaded", function(){
-  document.getElementById("welcome-modal").style.display = "flex";
-
-  // Przyciski zamykania
-  const heartBtn = document.getElementById("xp-heart-btn");
-  const xpBody = document.getElementById("xp-body");
-
-  // Funkcja pokazująca serduszko po przewinięciu do dołu
-  xpBody.addEventListener('scroll', function() {
-    if (xpBody.scrollTop + xpBody.clientHeight >= xpBody.scrollHeight - 5) {
-      heartBtn.style.display = "block";
+  showModal("welcome-modal");
+  const welcomeContent = document.querySelector("#welcome-content .retro-scroll");
+  const okBtn = document.getElementById("welcome-ok");
+  welcomeContent.addEventListener('scroll', function() {
+    if (welcomeContent.scrollTop + welcomeContent.clientHeight >= welcomeContent.scrollHeight - 5) {
+      okBtn.style.display = "inline-block";
     }
   });
-  // Jeśli na małych ekranach cała wiadomość się mieści, pokaż od razu
-  if (xpBody.scrollHeight <= xpBody.clientHeight + 5) {
-    heartBtn.style.display = "block";
+  if (welcomeContent.scrollHeight <= welcomeContent.clientHeight + 5) {
+    okBtn.style.display = "inline-block";
   }
+  okBtn.onclick = () => { hideModal("welcome-modal"); document.getElementById("bg-music").play(); };
+  document.getElementById("close-welcome").onclick = () => { hideModal("welcome-modal"); document.getElementById("bg-music").play(); };
+  // Ikona "my_computer" też otwiera wiadomość
+  document.getElementById("icon-message").onclick = () => { showModal("welcome-modal"); };
 
-  heartBtn.onclick = () => {
-    document.getElementById("welcome-modal").style.display = "none";
-    document.getElementById("bg-music").play();
-  };
-
-  // Quiz
-  const quizBtn = document.getElementById("quiz-btn");
-  const quizModal = document.getElementById("quiz-modal");
-  const closeQuiz = document.getElementById("close-quiz");
-  quizBtn.onclick = () => { quizModal.style.display = "flex"; };
-  closeQuiz.onclick = () => { quizModal.style.display = "none"; };
-
+  // Quiz okienko
+  document.getElementById("quiz-btn").onclick = () => { showModal("quiz-modal"); };
+  document.getElementById("close-quiz").onclick = () => { hideModal("quiz-modal"); };
+  document.getElementById("icon-music").onclick = () => { window.open("https://drive.google.com/file/d/1EbU08xF1yjfINQ7hIJthSiCB3yP6jxiz/view?usp=drive_link","_blank"); };
+  document.getElementById("icon-docs").onclick = () => { showModal("quiz-modal"); };
+  document.getElementById("icon-love").onclick = () => { showModal("cert-modal"); };
+  document.getElementById("close-cert").onclick = () => { hideModal("cert-modal"); };
   // Quiz walidacja
   const quizForm = document.getElementById("quiz-form");
   const quizResult = document.getElementById("quiz-result");
@@ -72,20 +77,14 @@ window.addEventListener("DOMContentLoaded", function(){
     if(correct === 5){
       quizResult.innerHTML = "🥳 Wszystko poprawnie! Odbierz swój certyfikat!";
       setTimeout(() => {
-        quizModal.style.display = "none";
-        document.getElementById("cert-modal").style.display = "flex";
+        hideModal("quiz-modal");
+        showModal("cert-modal");
       }, 1200);
     } else {
       quizResult.innerHTML = "😢 Coś poszło nie tak, spróbuj jeszcze raz!";
     }
   };
-
-  // Certyfikat zamykanie
-  document.getElementById("close-cert").onclick = () => {
-    document.getElementById("cert-modal").style.display = "none";
-  };
-
-  // Przygotuj pobieranie certyfikatu (zrzut ekranu)
+  // Certyfikat pobieranie
   document.getElementById("download-cert").onclick = function(e) {
     e.preventDefault();
     html2canvas(document.querySelector(".cert-content")).then(canvas => {
@@ -99,27 +98,27 @@ window.addEventListener("DOMContentLoaded", function(){
   // Muzyka w tle
   const bgMusic = document.getElementById('bg-music');
   bgMusic.volume = 0.5;
-  // Auto-play na mobile może wymagać interakcji użytkownika
+  try { bgMusic.play(); } catch {}
   document.body.onclick = () => { bgMusic.play(); };
-});
 
-// Quiz button uciekający na hover
-const quizBtn = document.getElementById("quiz-btn");
-let moveTimeout = null;
-quizBtn.onmouseover = function(){
-  clearTimeout(moveTimeout);
-  quizBtn.style.transition = "transform 0.22s cubic-bezier(0.55, 1.7, 0.7, 0.9)";
-  let x = (Math.random()-0.5) * 300;
-  let y = (Math.random()-0.5) * 80;
-  quizBtn.style.transform = `translate(${x}px, ${y}px) rotate(${(Math.random()*14-7)}deg)`;
-  moveTimeout = setTimeout(() => {
+  // Przycisk quizowy — szybkie wędrowanie
+  const quizBtn = document.getElementById("quiz-btn");
+  let moveTimeout = null;
+  function moveQuizBtn() {
+    const x = Math.random() * (window.innerWidth - quizBtn.offsetWidth - 80);
+    const y = 80 + Math.random() * (window.innerHeight - quizBtn.offsetHeight - 180);
+    quizBtn.style.transform = `translate(${x}px, ${y}px)`;
+  }
+  quizBtn.onmouseover = function(){
+    clearTimeout(moveTimeout);
+    moveQuizBtn();
+    moveTimeout = setInterval(moveQuizBtn, 500);
+  };
+  quizBtn.onmouseleave = function(){
+    clearTimeout(moveTimeout);
     quizBtn.style.transform = "";
-  }, 1500);
-};
-quizBtn.onmouseleave = function(){
-  clearTimeout(moveTimeout);
-  quizBtn.style.transform = "";
-};
+  };
+});
 
 // html2canvas loader (do zrzutu certyfikatu)
 (function(){
