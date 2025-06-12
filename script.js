@@ -163,10 +163,17 @@ window.addEventListener("DOMContentLoaded", function(){
     setTimeout(()=>{ document.getElementById("love-effect").style.display = "none"; }, 1900);
   };
 
-  // Miniodtwarzacz (działa play/pauza!)
   let music = document.getElementById('bg-music');
   let toggle = document.getElementById('music-toggle');
   let label = document.getElementById('music-label');
+
+  // Start muzyki od razu po wejściu na stronę
+  music.volume = 0.5;
+  // Spróbuj odtworzyć od razu – nie czekaj na klik!
+  setTimeout(() => { 
+    music.play().then(updateMusicState).catch(()=>{});
+  }, 500);
+
   function updateMusicState(){
     if(music.paused){
       toggle.innerText = "▶️";
@@ -186,11 +193,6 @@ window.addEventListener("DOMContentLoaded", function(){
   };
   music.onplay = updateMusicState;
   music.onpause = updateMusicState;
-  // Autoplay na mobile po pierwszym kliknięciu
-  music.volume = 0.5;
-  document.body.onclick = () => { music.play().then(updateMusicState).catch(()=>{}); };
-
-});
 
 // Okno modal - helpers
 function showModal(id) {
