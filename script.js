@@ -131,30 +131,31 @@ window.addEventListener("DOMContentLoaded", function(){
   };
 
   document.getElementById("close-cert").onclick = () => { hideModal("cert-modal"); };
-  document.getElementById("download-cert").onclick = function(e) {
-  e.preventDefault();
-  const cert = document.querySelector(".cert-content");
-  // Ukryj przycisk przed zrobieniem zdjęcia
-  const btn = document.getElementById("download-cert");
-  btn.style.display = "none";
-  // Ustaw certyfikat na pełną wysokość (jeśli był przewijany)
-  const prevMaxHeight = cert.style.maxHeight;
-  cert.style.maxHeight = 'none';
 
-  // Poczekaj, aż się ukryje, potem zrób screen
-  setTimeout(() => {
-    html2canvas(cert).then(canvas => {
-      // Przywróć wszystko
-      btn.style.display = "";
-      cert.style.maxHeight = prevMaxHeight;
-      // Pobierz obrazek
-      let lnk = document.createElement('a');
-      lnk.download = 'certyfikat_marty.png';
-      lnk.href = canvas.toDataURL();
-      lnk.click();
-    });
-  }, 200);
-};
+  // Nowa obsługa pobierania certyfikatu – całość, bez przycisku na obrazku
+  document.getElementById("download-cert").onclick = function(e) {
+    e.preventDefault();
+    const cert = document.querySelector(".cert-content");
+    const btn = document.getElementById("download-cert");
+    // Ukryj przycisk przed zrobieniem zdjęcia
+    btn.style.display = "none";
+    // Zapamiętaj i ustaw maxHeight na none, by html2canvas widział całość
+    const prevMaxHeight = cert.style.maxHeight;
+    cert.style.maxHeight = 'none';
+
+    setTimeout(() => {
+      html2canvas(cert).then(canvas => {
+        // Przywróć wszystko
+        btn.style.display = "";
+        cert.style.maxHeight = prevMaxHeight;
+        // Pobierz obrazek
+        let lnk = document.createElement('a');
+        lnk.download = 'certyfikat_marty.png';
+        lnk.href = canvas.toDataURL();
+        lnk.click();
+      });
+    }, 200);
+  };
 
   document.getElementById("icon-music").onclick = () => { window.open("https://drive.google.com/file/d/1EbU08xF1yjfINQ7hIJthSiCB3yP6jxiz/view?usp=drive_link","_blank"); };
 
@@ -175,19 +176,18 @@ window.addEventListener("DOMContentLoaded", function(){
     setTimeout(()=>{ document.getElementById("love-effect").style.display = "none"; }, 1900);
   };
 
-  // Miniodtwarzacz – muzyka gra od razu, play/pauza działa
+  // Miniodtwarzacz – muzyka gra od razu, play/pauza działa, działa też na mobile po kliknięciu
   let music = document.getElementById('bg-music');
   let toggle = document.getElementById('music-toggle');
   let label = document.getElementById('music-label');
   let triedAutoplay = false;
 
-  // Funkcja próbująca włączyć muzykę
   function tryAutoplayMusic() {
     if (triedAutoplay) return;
     triedAutoplay = true;
     music.volume = 0.5;
     music.play().then(updateMusicState).catch(() => {
-      // Nie udało się? Poczekaj na jakiekolwiek kliknięcie użytkownika
+      // Jeśli przeglądarka blokuje autoplay, spróbuj po pierwszym kliknięciu
       document.body.addEventListener('click', manualPlayMusicOnce, { once: true });
     });
   }
@@ -215,7 +215,8 @@ window.addEventListener("DOMContentLoaded", function(){
   music.onplay = updateMusicState;
   music.onpause = updateMusicState;
 
-  // Jeśli użytkownik kliknie gdziekolwiek na stronie i muzyka nie gra – spróbuj ją odpalić
+  // Wywołaj próbę odtwarzania muzyki na starcie i po kliknięciu
+  tryAutoplayMusic();
   document.body.addEventListener('click', tryAutoplayMusic);
 
 });
